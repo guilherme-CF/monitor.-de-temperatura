@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoramento</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="scripts" href="scripts.js">
+    <style>
+    body {
+	font-family: Arial, sans-serif;
+	margin: 0;
+	padding: 0;
+  background-color: #b2b0b0;
+}
+header {
+	background-color: #5013a0;
+	color: #fff;
+	padding: 20px;
+    display: flex;
+    align-items:center;  
+}
+.sidebar{
+    display: flex;
+    align-items: center;
+    position: absolute;
+    right: 0px;  
+}
+a{
+    margin: 70px;
+    color: white;
+    text-decoration: none;
+}
+a:hover {
+    color: #284490;
+  }
+button {
+    padding: 10px 20px;
+    background-color: #5013a0;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 5%;
+  }
+  button:hover {
+    background-color: #b8b7b7;
+  }
+.container{
+  position: relative;
+  display: flex;
+  margin-bottom: 0px;
+  margin: 15px;
+  padding: 15px;
+  border-radius: 5px;
+  background-color: rgb(225, 225, 225);
+}
+.box{
+  width: 150px;
+  height: 40px;
+  border-radius: 5px;
+  color: #fff;
+  box-shadow: 5px 5px 5px #00000087;
+  margin: auto;
+  padding: auto;
+}
+.status{
+  background-color: rgb(46, 182, 46);
+  box-shadow: 5px 5px 5px #1313135e;
+  border-radius: 4px;
+  padding: 3% 6%;
+  display: flex;
+  margin: auto;
+  align-items: center;
+  font-size: 50px;
+  color: #fff;
+}
+.temp{
+  background-color:#5013a0;
+  border-radius: 4px;
+  padding: 2% 4%;
+  display: flex;
+  margin: auto;
+  align-items: center;
+  font-size: 60px;
+  color: #fff;
+}
+.pressao-atm{
+  background-color:rgb(80, 19, 160);
+  border-radius: 4px;
+  padding: 2% 4%;
+  display: flex;
+  margin: auto;
+  align-items: center;
+  font-size: 40px;
+  color: #fff;
+}
+#conteiner-grafico{
+  position: relative;
+  display: block;
+  padding: 5px;
+}
+canvas{
+  width: 900px;
+  height: 400px;
+}
+/* GRAFICOOOO*/
+.grafico{
+  padding: 10px 20px;
+  margin: 8px 6px 4px 50px;
+  border-radius: 5px;
+  background-color: #ffffffb5;
+  border: 2px solid red;
+}
+/* RELOADDDDD*/
+.reload{
+  width: 150px;
+  display: flex;
+  margin-left: 70% ;
+  align-items: end;
+  justify-content: center;
+  border: 2px solid red;
+}
+/* MODAL MODAL MODAL */
+.modal {
+  display: none; /* Oculta o modal por padrão */
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5); /* Fundo escuro semi-transparente */
+}
+.modal-content {
+  background-color: #fff;
+  margin: 15% auto;
+  padding: 20px;
+  width: 80%;
+  max-width: 400px;
+}
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+form {
+  max-width: 400px;
+  margin: 0 auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+}
+.form-group {
+  margin-bottom: 20px;
+}
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+    </style>
+    <script>     
+        function reloadPage() 
+        { location.reload();  }
+    </script>
+</head>
+<body>
+<header>
+     <!--Sidebar com modal  -->
+        <h1>Monitoramento De Dados </h1>
+       <div class="sidebar" ><button id="open-modal">Abrir Modal</button></div>
+</header>
+<main>  
+     <div class="container">
+            <h1 class=" status">Sem Fogo</h1>
+            <h1 class="box temp">24°C</h1>
+            <h1 class="box pressao-atm">Pressao </h1>
+        </div>
+
+     <div class="container" id="conteiner-grafico"> 
+
+     <!--Grafico com o canvas -->   
+       <div class="grafico"><canvas id="meuGrafico"></canvas></div> 
+        <script>
+            var ctx = document.getElementById('meuGrafico').getContext('2d');
+    var meuGrafico = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['00','00','00','00','00', '00', '00', '00', '00','00','00:00'],
+            datasets: [{
+                label: 'temperatura',
+                data: [20, 45, 60, 90, 40, 60, 25,25,25,35,30],
+                backgroundColor: 'rgba(80, 19, 160, 0.84)'
+            }]
+        },
+        options: {
+            responsive: false,
+        }
+    });
+        </script>
+     <!-- botão de reload-->
+     <div class="reload"><button onclick="reloadPage()">Recarregar</button></div>
+      
+     </div>
+    <!--Parte do modal do sidebar -->
+     <div id="modal" class="modal">
+     <div class="modal-content">
+       <span class="close">&times;</span>
+       <h1>Formulário Simples</h1>
+
+       <form>
+           <label for="nome">SS-ID:</label>
+           <input type="nome" id="nome" name="nome" required><br>
+   
+           <label for="email">senha:</label>
+           <input type="password" id="email" name="email" required><br>
+   
+           <input type="submit" value="Salvar">
+       </form>    
+    </div>
+    </div>
+    <Script>
+        var modal = document.getElementById("modal");
+     var openModalBtn = document.getElementById("open-modal");
+     var closeModalBtn = document.getElementsByClassName("close")[0];
+
+    openModalBtn.onclick = function() {
+      modal.style.display = "block"; // Exibe o modal ao clicar no botão
+    };
+
+    closeModalBtn.onclick = function() {
+      modal.style.display = "none"; // Fecha o modal ao clicar no botão de fechar
+    };
+
+    window.onclick = function(event) {
+     if (event.target == modal) {
+       modal.style.display = "none"; // Fecha o modal ao clicar fora dele
+      }
+    };
+    </Script>
+    </main>  
+</html>
